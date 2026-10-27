@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fil">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PKLP – Ikalawang Sumatibong Pagsusulit</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:"Segoe UI",Calibri,Arial,sans-serif;color:#fff;background:linear-gradient(160deg,#04122a,#0b2a4f 60%,#0d4a5c);display:flex;justify-content:center;padding:18px}
+.wrap{width:100%;max-width:820px}
+.card{background:rgba(255,255,255,.07);border:1px solid rgba(94,234,212,.25);border-radius:18px;padding:24px;margin-top:12px}
+h1{font-size:1.5rem;margin:0 0 6px;color:#f5b942}
+h2{font-size:1.25rem;line-height:1.5;margin:6px 0 18px;font-weight:600}
+p{line-height:1.6;margin:8px 0}
+.sub{color:#5eead4}
+.bar{height:10px;background:rgba(255,255,255,.12);border-radius:8px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#14b8a6,#f5b942);transition:width .3s}
+.top{display:flex;justify-content:space-between;font-size:.95rem;margin-bottom:8px;color:#bfeee7}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-size:1.05rem;line-height:1.45;color:#fff;background:#12396a;border:2px solid transparent;border-radius:12px;padding:14px 18px;margin:10px 0;cursor:pointer;transition:.15s}
+.opt:hover:not(:disabled){border-color:#14b8a6;background:#164a85}
+.opt:disabled{cursor:default}
+.opt.ok{background:#0f766e;border-color:#5eead4}
+.opt.no{background:#9f1239;border-color:#fb7185}
+.opt.dim{opacity:.55}
+.btn{font:inherit;font-weight:700;font-size:1.05rem;color:#04122a;background:#f5b942;border:0;border-radius:12px;padding:12px 28px;cursor:pointer;margin-top:10px}
+.btn:hover{background:#ffd069}
+.btn.alt{background:#14b8a6}
+.big{font-size:3rem;font-weight:800;color:#f5b942;margin:6px 0}
+.rev{border-left:4px solid #fb7185;padding:8px 14px;margin:12px 0;background:rgba(0,0,0,.2);border-radius:8px}
+.rev b{color:#f5b942}
+.foot{text-align:center;font-size:.85rem;color:#8fb8c8;margin-top:16px}
+.hide{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="app"></div>
+  <div class="foot">Pag-aaral ng Kasaysayan at Lipunang Pilipino • Grade 11 • Malangas National High School</div>
+</div>
+<script>
+// [tanong, TAMANG SAGOT, mali, mali, mali]
+const Q=[
+["Ano ang tawag sa kilusang itinatag ng mga ilustrado sa Espanya na naglalayong makamit ang asimilasyon at reporma sa Pilipinas?","Kilusang Propaganda","Kilusang Agraryo","Kilusang Sekularisasyon","Kilusang Sosyalista"],
+["Sino ang kinikilalang “Ama ng Katipunan” na nagtatag ng lihim na samahang KKK noong Hulyo 7, 1892?","Andres Bonifacio","Emilio Aguinaldo","Jose Rizal","Marcelo H. del Pilar"],
+["Aling nobela ni Dr. Jose Rizal ang naglantad ng mga maling sistema ng mga Kastila at nagbigay-daan sa paggising ng damdaming makabayan?","Noli Me Tangere","El Filibusterismo","Florante at Laura","Urbana at Feliza"],
+["Aling samahan ang itinatag ni Dr. Jose Rizal noong Hulyo 3, 1892, na naglalayong pagkaisahin ang buong kapuluan ng Pilipinas?","La Liga Filipina","Katipunan","Kilusang Masonerya","Real Sociedad"],
+["Ano ang pangunahing layunin ng Kilusang Sekularisasyon na pinamunuan ng mga paring Pilipino tulad ni Padre Jose Burgos?","Mabigyan ng sariling parokya ang mga paring secular","Magkaroon ng pantay na karapatan ang mga sundalo","Maipatupad ang repormang agraryo sa mga lalawigan","Makamit ang kalayaan mula sa bansang Espanya"],
+["Anong samahan ang itinatag ni Jose Rizal noong 1892 na naglayong pagbuklurin ang buong kapuluan at magbigay ng tulong sa isa’t isa?","La Liga Filipina","Cuerpo de Compromisarios","Hermanos Pule","Katipunan"],
+["Paano binago ng Kilusang Propaganda ang pananaw ng mga Pilipino sa kanilang kalagayan sa ilalim ng pamamahala ng Espanya?","Sa pamamagitan ng pagmumulat sa mga karapatang dapat tamasahin bilang isang lalawigan.","Sa pamamagitan ng paghikayat sa lahat na magbalik-loob sa mga katutubong ritwal.","Sa pamamagitan ng pagpapakita na ang armadong pag-aaklas ay ang tanging solusyon.","Sa pamamagitan ng pagtuturo ng mga bagong teknik sa pagsasaka upang umunlad ang ekonomiya."],
+["Ano ang pangunahing bunga ng mga kilusang agraryo sa pag-unlad ng kamalayang panlipunan ng mga Pilipino noong panahon ng Kastila?","Nagpakita ito ng malawakang pang-aabuso sa sistemang pansakahan na nag-udyok ng pagkakaisa.","Nagdulot ito ng mabilis na pagyaman ng lahat ng mga magsasaka sa mga lalawigan.","Nagbigay ito ng pagkakataon upang makapag-aral ang mga anak ng mga manggagawa sa Europa.","Nagpatatag ito ng ugnayan sa pagitan ng mga Pilipino at ng mga prayleng may-ari ng lupa."],
+["Bakit naging mitsa ng Himagsikang 1896 ang pagkakatuklas ng lihim na samahang Katipunan ng mga awtoridad na Kastila?","Dahil ito ang naging hudyat upang simulan ang pakikibaka bago pa man sila tuluyang madakip.","Dahil napilitan ang mga miyembro na sumuko at tanggapin ang lahat ng kondisyon ng mga banyaga.","Dahil nais ng mga Katipunero na patunayan na mas malakas ang kanilang hukbo kaysa sa mga gwardya sibil.","Dahil ito ang nagbigay-daan upang magkaroon ng diplomatikong negosasyon sa pagitan ng dalawang panig."],
+["Paano nakatulong ang mga akda nina Rizal, del Pilar, at Jaena sa pagsusulong ng nasyonalismong Pilipino?","Sa pamamagitan ng pagbibigay ng intelektwal na batayan sa mga hinaing at mithiin ng mga mamamayan.","Sa pamamagitan ng pagbibigay ng sapat na pondo para pambili ng mga makabagong armas at kanyon.","Sa pamamagitan ng pag-oorganisa ng mga palarong pampalakasan upang pag-isahin ang mga kabataan.","Sa pamamagitan ng paghimok sa mga dayuhang bansa na sakupin ang bansa mula sa kamay ng Espanya."],
+["Ano ang pangunahing layunin ng Kilusang Propaganda sa pagbuo ng kamalayang Pilipino noong panahon ng Espanyol?","Gisingin ang damdaming makabayan sa pamamagitan ng panulat at mapayapang reporma.","Hikayatin ang mga mamamayan na magsagawa ng madugong himagsikan sa lalong madaling panahon.","Itatag ang isang malayang pamahalaan na hiwalay sa anumang impluwensya ng Espanya.","Makipagtulungan sa mga prayle upang mapanatili ang kapangyarihan ng simbahan sa bansa."],
+["Paano nakatulong ang mga kilusang agraryo sa pag-unlad ng nasyonalismong Pilipino sa mga lalawigan?","Ipinakita nito ang pangangailangan para sa kolektibong aksyon laban sa hindi patas na pag-aari ng lupa.","Binigyan nito ng pagkakataon ang mga magsasaka na maging opisyal ng gobyernong kolonyal.","Nagbigay ito ng sapat na pondo para sa paglalakbay ng mga ilustrado patungo sa Europa.","Nagresulta ito sa pagkakaroon ng libreng edukasyon para sa lahat ng mga anak ng mga magbubukid."],
+["Alin sa mga sumusunod na sitwasyon ang pinakamahusay na nagpapakita ng epekto ng himagsikan sa pagkakaisa ng mga Pilipino?","Pagsapi ng iba’t ibang sektor ng lipunan sa Katipunan upang labanan ang kolonyalismong Espanyol.","Pagpapadala ng mga pormal na liham sa Hari ng Espanya para sa paghingi ng mga bagong reporma.","Pagpapatuloy ng mga nakasanayang tradisyong panrelihiyon mula sa mga misyonerong Espanyol.","Pagtatayo ng mga pribadong paaralan para lamang sa mga anak ng mga mayayamang pamilya."],
+["Kung ikaw ay isang manunulat noong panahon ng Kilusang Propaganda, alin sa mga sumusunod na hakbang ang iyong gagawin upang isulong ang kamalayang Pilipino?","Gumamit ng sining at panitikan upang ilantad ang mga pang-aabuso ng mga kolonyalistang Espanyol.","Manatiling tahimik sa mga isyung panlipunan upang maiwasan ang anumang parusa mula sa mga Kastila.","Mag-organisa ng mga lihim na armadong grupo sa bawat lalawigan upang simulan ang pag-aalsa.","Makipag-alyansa sa mga dayuhang bansa upang masakop at pamunuan ang Pilipinas sa hinaharap."],
+["Batay sa mga aral ng mga kilusang panlipunan, paano maipakikita ng isang mag-aaral ang aktibong paglahok sa pagsusulong ng kapakanan ng bansa?","Paglahok sa mga gawaing sibiko at komunidad na naglalayong makatulong sa mga nangangailangan.","Pagbalewala sa mga batas at regulasyon na ipinatutupad ng kasalukuyang lokal na pamahalaan.","Pagpili na manirahan at magtrabaho sa ibang bansa sa lalong madaling panahon matapos ang pag-aaral.","Pagtangkilik sa mga produktong galing sa ibang bansa dahil sa paniniwalang mas mataas ang kalidad nito."],
+["Anong ugnayan ang makikita sa pagitan ng Kilusang Propaganda at ng Himagsikang 1896 sa pagbuo ng nasyonalismo?","Nagbigay ang propaganda ng ideolohikal na batayan para sa armadong pakikibaka.","Tinustusan ng mga propagandista ang lahat ng sandata na ginamit ng mga Katipunero.","Nagsilbing militar na pagsasanay ang mga organisasyong binuo ng mga ilustrado.","Pinamunuan ng mga propagandista mula sa Espanya ang unang bugso ng himagsikan."],
+["Bakit itinuturing na mahalagang salik ang kilusang agraryo sa pag-usbong ng himagsikan sa mga lalawigan ng Katagalugan?","Dahil ang mga prayle ang pangunahing nagmamay-ari ng mga lupang sakahan dito.","Dahil ang gobyerno ay nagpatupad ng pantay na buwis sa lahat ng mga lalawigan.","Dahil ang mga magsasaka ay binigyan ng armas ng mga dayuhang mangangalakal.","Dahil ang mga asyendero ay nagnanais na palawakin ang kapangyarihan ng Espanya."],
+["Paano nagkaiba ang paraan ng pakikibaka ng Kilusang Propaganda sa paraan ng Katipunan?","Paghingi ng reporma ang sa propaganda habang ganap na kalayaan ang sa Katipunan.","Pakikipag-alyansa sa Japan ang propaganda habang pakikipag-alyansa sa Amerika ang Katipunan.","Pagpapatalsik sa lahat ng Kastila ang propaganda habang asimilasyon ang sa Katipunan.","Pagsuporta sa relihiyong Katoliko ang propaganda habang pagbuo ng bagong relihiyon ang Katipunan."],
+["Alin sa mga sumusunod ang pinakamabisang batayan upang masabing nagtagumpay ang mga kilusang panlipunan sa paghubog ng kamalayang Pilipino?","Ang pagkakaroon ng iisang pagkakakilanlan at mithiin para sa sariling pamahalaan.","Ang pagdami ng mga Pilipinong naging opisyal sa ilalim ng kolonyal na Espanya.","Ang pagpayag ng Espanya na gawing probinsya nito ang buong arkipelago.","Ang pagbabalik ng lahat ng lupang kinuha ng mga prayle sa mga katutubong pinuno."],
+["Kung ikaw ay lilikha ng isang plano upang ipagpatuloy ang diwa ng mga kilusang panlipunan sa kasalukuyan, ano ang dapat maging pangunahing mithiin nito?","Bumuo ng mga programang magmumulat sa mamamayan tungkol sa kanilang karapatan.","Magtatag ng isang samahan na ang tanging layunin ay ang makipag-ugnayan sa Espanya.","Hikayatin ang mga kabataan na magtrabaho sa ibang bansa upang makatulong sa ekonomiya.","Ibalik ang sistemang encomienda upang masigurado ang kaayusan sa bawat lalawigan."],
+["Sino ang pangulo ng Pilipinas nang ipagkaloob ng Estados Unidos ang kalayaan ng Pilipinas noong Hulyo 4, 1946?","Manuel Roxas","Carlos P. Garcia","Elpidio Quirino","Ramon Magsaysay"],
+["Anong batas ang ipinasa ng Kongreso ng Estados Unidos noong 1946 na namahala sa ugnayang pang-ekonomiya at kalakalan sa pagitan ng Estados Unidos at Pilipinas?","Bell Trade Act","Hare-Hawes-Cutting Act","Jones Law","Tydings-McDuffie Act"],
+["Ano ang pangalan ng pangkat ng mga dating gerilyang lumaban sa mga Hapones na naghamon sa pamahalaan pagkatapos ng Ikalawang Digmaang Pandaigdig?","Hukbalahap","Bagong Alyansang Makabayan","Katipunan","Makapili"],
+["Bakit pumayag ang pamahalaan ng Pilipinas na amyendahan ang Saligang Batas ng 1935 upang isama ang probisyon tungkol sa Parity Rights?","Upang matugunan ang mga kundisyon sa pagtanggap ng tulong mula sa Estados Unidos para sa rehabilitasyon pagkatapos ng digmaan.","Upang pahintulutan ang mga mamamayang Pilipino na magtayo ng negosyo sa iba’t ibang estado ng Amerika.","Upang matiyak na mananatiling teritoryo ng Estados Unidos ang Pilipinas.","Upang maiwasan ang paglaganap ng komunismo sa iba’t ibang rehiyon ng Timog-Silangang Asya."],
+["Ano ang pangunahing layunin ni Pangulong Ramon Magsaysay sa pagpapatupad ng Land Settlement and Development Corporation (LASEDECO)?","Magbigay ng lupa sa mga magsasakang walang sariling lupa at sa mga dating kasapi ng Hukbalahap.","Magtayo ng mga bagong sentrong urban para sa mga manggagawang industriyal.","Hikayatin ang mga dayuhang korporasyon na mamuhunan sa agrikultura.","Dagdagan ang buwis na kinokolekta mula sa mga may-ari ng malalawak na lupain."],
+["Ano ang pangunahing layunin ng mga Pilipino sa pakikiangkop sa mga hamon ng pagsasarili pagkatapos ng Ikalawang Digmaang Pandaigdig?","Mapangalagaan ang soberanya at mapaunlad ang sariling ekonomiya.","Maibalik ang sistema ng pamamahala noong panahon ng Espanyol.","Manatiling umaasa sa tulong pinansyal ng mga dating mananakop.","Palawakin ang teritoryo ng bansa sa pamamagitan ng pananakop."],
+["Sa ilalim ng patakarang ‘Filipino First’ ni Pangulong Carlos P. Garcia, paano ipinakita ng mga lokal na negosyante ang kanilang pakikiangkop sa malayang ekonomiya?","Namuhunan sa mga lokal na industriya upang bawasan ang importasyon.","Binawasan ang produksyon ng mga lokal na produkto para sa ibang bansa.","Humingi ng pahintulot sa mga dayuhan bago magtayo ng bagong negosyo.","Pinatira ang mga dayuhang manggagawa sa loob ng kanilang mga pabrika."],
+["Kung ikaw ay isang magsasaka sa panahon ng pagpapatupad ng Land Reform Code ni Diosdado Macapagal, alin sa mga sumusunod na hakbang ang iyong gagawin upang makamit ang pagsasarili?","Makilahok sa mga kooperatiba upang mapataas ang antas ng ani.","Ipamahagi ang iyong sariling kagamitan sa mga dayuhang korporasyon.","Manatiling nangungupahan sa lupa nang walang balak na pag-aari.","Tumigil sa pagsasaka at lumipat sa mga lungsod upang magtrabaho."],
+["Bakit itinuring na isang mahalagang hamon sa kolektibong karanasan ng mga Pilipino ang pagkakaroon ng Bell Trade Act sa ilalim ng administrasyong Roxas?","Dahil naging hadlang ito sa ganap na kontrol ng bansa sa likas na yaman.","Dahil nagbigay ito ng pantay na karapatan sa mga Pilipino sa Amerika.","Dahil pinabilis nito ang pag-alis ng lahat ng base militar sa bansa.","Dahil pinagbawal nito ang pakikipagkalakalan sa ibang bansang Asyano."],
+["Paano mo bibigyang-katwiran ang naging epekto ng Batas Militar sa kolektibong karanasan ng pakikiangkop ng mga Pilipino sa panahon ng pagsasarili?","Nagresulta ito sa pagkakabaha-bahagi at pakikibaka para sa demokrasya.","Nagdulot ito ng disiplina na nagpabago sa ugali ng lahat ng mamamayan.","Nagpakita ito ng matagumpay na pagkakaisa ng lahat ng sektor ng lipunan.","Naging susi ito upang maging pinakamayamang bansa ang Pilipinas sa Asya."],
+// ---- 15 karagdagang tanong ----
+["Anong pahayagan ang naging pangunahing tinig ng mga propagandista sa Espanya sa paglalathala ng kanilang mga hinaing at panawagan para sa reporma?","La Solidaridad","Diariong Tagalog","La Independencia","El Comercio"],
+["Anong pangyayari noong 1872 ang labis na nagpagalit at nagpamulat sa maraming Pilipino sa kawalang-katarungan ng pamahalaang Kastila?","Ang pagbitay sa tatlong paring Gomburza","Ang pagkakatuklas sa lihim na samahang Katipunan","Ang pagkakatatag ng La Liga Filipina sa Maynila","Ang paglathala ng nobelang Noli Me Tangere"],
+["Sino ang sumulat ng Kartilya na naging gabay sa asal at pagkilos ng mga kasapi ng Katipunan?","Emilio Jacinto","Apolinario Mabini","Pio Valenzuela","Mariano Ponce"],
+["Anong pangyayari noong Agosto 1896 ang tinuturing na simula ng himagsikan nang punitin ng mga Katipunero ang kanilang sedula?","Ang Sigaw sa Pugad Lawin","Ang Kasunduan sa Biak-na-Bato","Ang Kumbensiyon sa Tejeros","Ang pagbitay kay Jose Rizal"],
+["Ano ang ibig sabihin ng asimilasyon na isinulong ng mga propagandista para sa Pilipinas?","Pagiging lalawigan ng Espanya na may pantay na karapatan","Paghihiwalay ng Pilipinas mula sa pamamahala ng Espanya","Pagbuo ng sariling hukbong lalaban sa mga mananakop na Kastila","Pagbibigay ng higit na kapangyarihan sa mga prayle sa pamahalaan"],
+["Anong kasunduan noong 1955 ang pumalit sa Bell Trade Act at nagbago sa ugnayang pangkalakalan ng Pilipinas at Estados Unidos?","Laurel-Langley Agreement","Treaty of General Relations","Military Bases Agreement","Philippine Rehabilitation Act"],
+["Ano ang pangunahing nilalaman ng Military Bases Agreement na nilagdaan noong 1947 ng Pilipinas at Estados Unidos?","Pagpapahintulot na manatili sa bansa ang mga base militar ng Amerika sa loob ng 99 na taon","Pagbabawal sa lahat ng dayuhang sundalo na manatili sa mga pulo ng Pilipinas simula noong 1947","Pagbibigay ng buong pagmamay-ari sa Estados Unidos ng lahat ng pangunahing pantalan ng bansa","Pagtatalaga sa mga base ng Amerika bilang pag-aari ng Pilipinas pagkalipas ng limang taon"],
+["Anong batas sa panahon ni Pangulong Magsaysay ang nagtakda ng ugnayan ng may-ari ng lupa at ng nangungupahang magsasaka upang maprotektahan ang huli?","Agricultural Tenancy Act ng 1954","Philippine Rehabilitation Act ng 1946","Hare-Hawes-Cutting Act ng 1933","Bell Trade Act ng 1946"],
+["Ano ang pagbabagong ginawa ni Pangulong Diosdado Macapagal noong 1962 tungkol sa pagdiriwang ng kalayaan ng bansa?","Inilipat ang Araw ng Kalayaan mula Hulyo 4 patungong Hunyo 12","Inilipat ang Araw ng Kalayaan mula Hunyo 12 patungong Hulyo 4","Inilipat ang Araw ng Kalayaan mula Hulyo 4 patungong Agosto 21","Inalis ang Araw ng Kalayaan sa listahan ng mga pambansang pista opisyal"],
+["Sino ang pangulong naglagda ng Proklamasyon Blg. 1081 na nagpatupad ng Batas Militar noong Setyembre 1972?","Ferdinand Marcos","Diosdado Macapagal","Carlos P. Garcia","Elpidio Quirino"],
+["Anong pangyayari noong Pebrero 1986 ang nagpakita ng mapayapang pagkakaisa ng mga Pilipino laban sa diktadurya?","Ang People Power sa EDSA","Ang pagbomba sa Plaza Miranda","Ang pagpapatupad ng Parity Rights","Ang pagtatatag ng Philippine Commonwealth"],
+["Ano ang ibinigay ng Parity Rights sa mga Amerikano na naging dahilan ng pagtutol ng maraming Pilipino?","Karapatang katumbas ng Pilipino sa paggamit ng likas na yaman ng bansa","Karapatang mamuno sa Kongreso at sa lahat ng sangay ng pamahalaan ng Pilipinas","Karapatang magmay-ari ng lahat ng lupang sakahan sa bawat lalawigan ng bansa","Karapatang kumuha ng buwis mula sa lahat ng negosyong pag-aari ng mga Pilipino"],
+["Ano ang pangunahing hinaing ng mga Hukbalahap na nagpatuloy sa kanilang pakikibaka matapos ang digmaan?","Hindi patas na pagmamay-ari ng lupa at pang-aabuso ng may-ari","Mataas na buwis sa mga produktong inaangkat mula sa bansang Amerika","Kakulangan ng mga paaralan para sa mga anak ng mga dating gerilya","Pagbabawal na magtayo ng mga simbahan sa mga nayon ng kanayunan"],
+["Anong pagkakatulad ang makikita sa Kilusang Propaganda at sa mga programang repormang agraryo pagkatapos ng digmaan?","Parehong naglayong tugunan ang hinaing ng mamamayan sa pamamagitan ng reporma","Parehong umasa lamang sa armadong pakikibaka laban sa mga mananakop na dayuhan","Parehong pinamunuan ng mga prayle at ng mga may-ari ng malalawak na lupain","Parehong naglayong ibalik ang pamamahala ng Espanya sa buong kapuluan"],
+["Anong pahayagan ang inilathala ng Katipunan upang ipalaganap ang mga layunin at panawagan nito sa mga mamamayan?","Kalayaan","La Solidaridad","Diariong Tagalog","El Heraldo de la Revolución"]
+];
+
+const $=id=>document.getElementById(id), app=$("app");
+const rnd=n=>Math.floor(crypto.getRandomValues(new Uint32Array(1))[0]/4294967296*n);
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]]}return a};
+let prev="",set=[],i=0,score=0,missed=[];
+
+function build(){
+  let ids,pos;
+  do{ids=shuf(Q.map((_,k)=>k))}while(ids.join()===prev);
+  prev=ids.join();
+  // pantay-pantay ang posisyon ng tamang sagot, walang apat na magkakasunod
+  do{pos=shuf(Q.map((_,k)=>k%4))}while(/(\d)\1\1\1/.test(pos.join("")));
+  set=ids.map((id,k)=>{const q=Q[id],o=shuf(q.slice(2));o.splice(pos[k],0,q[1]);return{s:q[0],o,c:pos[k]}});
+}
+function el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+function clear(){app.innerHTML=""}
+
+function start(){
+  clear();
+  const c=el("div","card");
+  c.append(el("h1",0,"Ikalawang Sumatibong Pagsusulit"),
+    el("p","sub","Pag-aaral ng Kasaysayan at Lipunang Pilipino"),
+    el("p",0,"Basahin at unawaing mabuti ang bawat tanong. I-click ang sa tingin mo ay pinakatamang sagot. Hindi na mababago ang sagot kapag napili na."),
+    el("p",0,Q.length+" na tanong • Magkakaiba ang ayos ng mga tanong at sagot sa bawat pagsubok."));
+  const b=el("button","btn","Simulan");
+  b.onclick=()=>{build();i=0;score=0;missed=[];show()};
+  c.append(b);app.append(c);
+}
+
+function show(){
+  clear();
+  const q=set[i],c=el("div","card");
+  const top=el("div","top");
+  top.append(el("span",0,"Tanong "+(i+1)+" ng "+set.length),el("span",0,"Iskor: "+score));
+  const bar=el("div","bar"),f=el("i");f.style.width=(i/set.length*100)+"%";bar.append(f);
+  c.append(top,bar,el("h2",0,q.s));
+  const btns=q.o.map((t,k)=>{const b=el("button","opt",t);b.onclick=()=>pick(k,btns,c);c.append(b);return b});
+  app.append(c);
+}
+
+function pick(k,btns,c){
+  const q=set[i];
+  btns.forEach((b,j)=>{b.disabled=true;if(j===k)b.classList.add(k===q.c?"ok":"no");else b.classList.add("dim")});
+  if(k===q.c)score++;else missed.push({s:q.s,mine:q.o[k]});
+  const last=i===set.length-1,n=el("button","btn",last?"Tingnan ang Resulta":"Susunod");
+  n.onclick=()=>{i++;last?done():show()};
+  c.append(n);n.focus();
+}
+
+function done(){
+  clear();
+  const p=Math.round(score/set.length*100),c=el("div","card");
+  const msg=p>=90?"Napakahusay!":p>=75?"Magaling!":p>=50?"Maaari pang pagbutihin.":"Magsanay pa at subukan muli.";
+  c.append(el("h1",0,"Resulta"),el("div","big",score+" / "+set.length),el("p","sub",p+"% • "+msg));
+  const r=el("button","btn alt","Ulitin ang Pagsusulit");r.onclick=()=>{build();i=0;score=0;missed=[];show()};
+  c.append(r);
+  if(missed.length){
+    c.append(el("h2",0,"Mga tanong na nagkamali ("+missed.length+")"));
+    missed.forEach(m=>{const d=el("div","rev");d.append(el("p",0,m.s));
+      const a=el("p");a.append("Sagot mo: ",el("span",0,m.mine));
+      d.append(a);c.append(d)});
+  }
+  app.append(c);
+}
+start();
+</script>
+</body>
+</html>
